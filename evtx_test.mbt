@@ -91,3 +91,18 @@ test "json contains event_id" {
   let json = events_json(file.events(PythonEvtx).unwrap())
   assert_true(text_contains(json, "\"event_id\":1000"))
 }
+
+///|
+test "tampered header checksum fails verify" {
+  let raw = write_events(sample_event_drafts()).unwrap()
+  let buf : Array[Byte] = []
+  for b in raw {
+    buf.push(b)
+  }
+  buf[16] = (buf[16].to_int() ^ 1).to_byte()
+  let file = parse_evtx(Bytes::from_array(buf)).unwrap()
+  match file.verify() {
+    Err(InvalidChecksum(_, _, _)) => ()
+    _ => fail("expected checksum error")
+  }
+}
