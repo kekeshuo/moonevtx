@@ -1,0 +1,230 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kekeshuo/moonevtx"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn append_bytes(Array[Byte], Bytes) -> Unit
+
+pub fn base64_encode(Bytes) -> String
+
+pub fn bytes_from_ascii(String) -> Bytes
+
+pub fn bytes_slice(Bytes, Int, Int) -> Bytes
+
+pub fn bytes_slice_result(Bytes, Int, Int) -> Result[Bytes, EvtxError]
+
+pub fn concat_bytes(Bytes, Bytes) -> Bytes
+
+pub fn crc32_bytes(Bytes) -> UInt
+
+pub fn crc32_slice(Bytes, Int, Int) -> Result[UInt, EvtxError]
+
+pub fn crc32_two_slices(Bytes, Int, Int, Int, Int) -> Result[UInt, EvtxError]
+
+pub fn dump_file(EvtxFile, TimeStyle) -> Result[String, EvtxError]
+
+pub fn empty_filter() -> FilterSpec
+
+pub fn encode_guid_text(String, Array[Byte]) -> Result[Unit, EvtxError]
+
+pub fn escape_xml_value(String) -> String
+
+pub fn events_json(Array[Event]) -> String
+
+pub fn file_stats(EvtxFile, TimeStyle) -> Result[String, EvtxError]
+
+pub fn filetime_to_unix(UInt64) -> Int64
+
+pub fn filter_events(Array[Event], FilterSpec) -> Array[Event]
+
+pub fn format_filetime(UInt64, TimeStyle) -> String
+
+pub fn format_guid(Bytes, Int) -> Result[String, EvtxError]
+
+pub fn format_guid_node(Bytes, Int) -> Result[String, EvtxError]
+
+pub fn format_sid(Bytes, Int, Int) -> Result[(String, Int), EvtxError]
+
+pub fn format_systemtime(Bytes, Int, TimeStyle) -> Result[String, EvtxError]
+
+pub fn format_variant(Bytes, Int, Int, Int?, TimeStyle) -> Result[(String, Int), EvtxError]
+
+pub fn hex_decode(String) -> Result[Bytes, EvtxError]
+
+pub fn hex_encode(Bytes) -> String
+
+pub fn hexdump_range(Bytes, Int, Int) -> Result[String, EvtxError]
+
+pub fn parse_evtx(Bytes) -> Result[EvtxFile, EvtxError]
+
+pub fn parse_evtx_styled(Bytes, TimeStyle) -> Result[EvtxFile, EvtxError]
+
+pub fn render_root(ParsedRoot, TimeStyle) -> Result[String, EvtxError]
+
+pub fn sample_event_drafts() -> Array[EventDraft]
+
+pub fn text_contains(String, String) -> Bool
+
+pub fn unix_to_filetime(Int64) -> UInt64
+
+pub fn utf16_units(String) -> Array[Int]
+
+pub fn validate_xml_name(String) -> Result[String, EvtxError]
+
+pub fn variant_type_name(Int) -> String
+
+pub fn write_events(Array[EventDraft]) -> Result[Bytes, EvtxError]
+
+// Errors
+
+// Types and methods
+pub(all) struct BinAttr {
+  name : String
+  value : BinNode
+} derive(@debug.Debug)
+
+pub(all) enum BinNode {
+  EndOfStream
+  StreamStart
+  OpenStart(String, Array[BinAttr], Array[BinNode])
+  ValueText(String)
+  CData(String)
+  CharRef(Int)
+  EntityRef(String)
+  PITarget(String)
+  PIData(String)
+  NormalSub(Int, Int)
+  OptionalSub(Int, Int)
+} derive(@debug.Debug)
+
+pub(all) struct ChunkHeader {
+  offset : Int
+  first_record : UInt64
+  last_record : UInt64
+  log_first_record : UInt64
+  log_last_record : UInt64
+  header_size : UInt
+  last_record_offset : UInt
+  next_record_offset : UInt
+  data_checksum : UInt
+  header_checksum : UInt
+  header_ok : Bool
+  data_ok : Bool
+} derive(@debug.Debug)
+
+pub(all) struct Event {
+  record_id : UInt64
+  event_id : UInt
+  level : Int
+  provider : String
+  channel : String
+  computer : String
+  timestamp : UInt64
+  time_text : String
+  message : String
+  data : Array[(String, String)]
+} derive(@debug.Debug)
+pub fn Event::json(Self) -> String
+pub fn Event::matches(Self, FilterSpec) -> Bool
+
+pub(all) struct EventDraft {
+  provider : String
+  event_id : UInt
+  level : Int
+  timestamp : UInt64
+  channel : String
+  computer : String
+  message : String
+} derive(@debug.Debug)
+
+pub(all) enum EvtxError {
+  Truncated(String, Int, Int)
+  InvalidMagic(String, String)
+  InvalidChecksum(String, UInt, UInt)
+  InvalidHeader(String)
+  InvalidChunk(String)
+  InvalidRecord(String)
+  UnexpectedToken(Int, Int)
+  InvalidName(String)
+  UnsupportedType(Int, Int)
+  InvalidSubstitution(String)
+  InvalidDraft(String)
+  InvalidXmlName(String)
+} derive(Eq, @debug.Debug)
+pub fn EvtxError::code(Self) -> String
+pub fn EvtxError::message(Self) -> String
+
+pub(all) struct EvtxFile {
+  data : Bytes
+  header : FileHeader
+  chunks : Array[ChunkHeader]
+  records : Array[EvtxRecord]
+}
+pub fn EvtxFile::events(Self, TimeStyle) -> Result[Array[Event], EvtxError]
+pub fn EvtxFile::filter(Self, FilterSpec, TimeStyle) -> Result[Array[Event], EvtxError]
+pub fn EvtxFile::is_dirty(Self) -> Bool
+pub fn EvtxFile::is_full(Self) -> Bool
+pub fn EvtxFile::record_count(Self) -> Int
+pub fn EvtxFile::verify(Self) -> Result[Unit, EvtxError]
+pub fn EvtxFile::xml_records(Self, TimeStyle) -> Result[Array[String], EvtxError]
+
+pub(all) struct EvtxRecord {
+  number : UInt64
+  timestamp : UInt64
+  size : UInt
+  chunk_offset : Int
+  offset : Int
+  root : ParsedRoot
+} derive(@debug.Debug)
+pub fn EvtxRecord::event(Self, TimeStyle) -> Result[Event, EvtxError]
+pub fn EvtxRecord::hexdump(Self, EvtxFile) -> Result[String, EvtxError]
+pub fn EvtxRecord::xml(Self, TimeStyle) -> Result[String, EvtxError]
+
+pub(all) struct FileHeader {
+  oldest_chunk : UInt64
+  current_chunk_number : UInt64
+  next_record_number : UInt64
+  header_size : UInt
+  minor_version : Int
+  major_version : Int
+  header_chunk_size : Int
+  chunk_count : Int
+  flags : UInt
+  checksum : UInt
+  checksum_ok : Bool
+} derive(@debug.Debug)
+
+pub(all) struct FilterSpec {
+  event_id : UInt?
+  provider : String?
+  channel : String?
+  computer : String?
+  level : Int?
+  contains : String?
+  since : UInt64?
+  until : UInt64?
+} derive(@debug.Debug)
+
+pub(all) struct ParsedRoot {
+  template : Array[BinNode]
+  substitutions : Array[SubCell]
+} derive(@debug.Debug)
+
+pub(all) struct SubCell {
+  type_code : Int
+  payload : Bytes
+  nested : Array[ParsedRoot]
+} derive(@debug.Debug)
+
+pub(all) enum TimeStyle {
+  PythonEvtx
+  Iso8601
+} derive(Eq, @debug.Debug)
+
+// Type aliases
+
+// Traits
+
