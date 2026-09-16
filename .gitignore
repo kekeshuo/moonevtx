@@ -1,0 +1,9 @@
+_build/
+target/
+.mooncakes/
+*.tmp
+*.log
+.DS_Store
+
+_check*.txt
+_test.txt
