@@ -307,7 +307,7 @@ fn parse_record(
     Ok(v) => v
     Err(e) => return Err(e)
   }
-  Ok(EvtxRecord::{ number, timestamp, size, chunk_offset, offset, root })
+  Ok(EvtxRecord::{ number, timestamp, size, chunk_offset, offset, root, })
 }
 
 ///|
@@ -383,7 +383,7 @@ pub fn parse_evtx_styled(
     }
     i = i + 1
   }
-  Ok(EvtxFile::{ data, header, chunks, records })
+  Ok(EvtxFile::{ data, header, chunks, records, })
 }
 
 ///|

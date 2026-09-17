@@ -120,7 +120,7 @@ fn parse_attribute(
     Ok(v) => v
     Err(e) => return Err(e)
   }
-  Ok((BinAttr::{ name, value }, next))
+  Ok((BinAttr::{ name, value, }, next))
 }
 
 ///|
@@ -438,7 +438,7 @@ fn parse_substitutions(
       }
       nested.push(root)
     }
-    cells.push(SubCell::{ type_code: typ, payload, nested })
+    cells.push(SubCell::{ type_code: typ, payload, nested, })
     cur = cur + size
   }
   Ok((cells, cur))
@@ -530,7 +530,7 @@ fn parse_root(
       Ok(v) => v
       Err(e) => return Err(e)
     }
-    Ok((ParsedRoot::{ template: nodes, substitutions: subs }, end))
+    Ok((ParsedRoot::{ template: nodes, substitutions: subs, }, end))
   } else {
     let (nodes, mid) = match
       parse_node_list(data, pos, chunk_offset, names, style, data.length()) {
@@ -543,9 +543,9 @@ fn parse_root(
         Ok(v) => v
         Err(e) => return Err(e)
       }
-      Ok((ParsedRoot::{ template: nodes, substitutions: subs }, end))
+      Ok((ParsedRoot::{ template: nodes, substitutions: subs, }, end))
     } else {
-      Ok((ParsedRoot::{ template: nodes, substitutions: [] }, mid))
+      Ok((ParsedRoot::{ template: nodes, substitutions: [], }, mid))
     }
   }
 }

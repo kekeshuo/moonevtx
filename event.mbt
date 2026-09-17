@@ -178,7 +178,7 @@ fn walk_event(
         let data = next.data
         data.push((key, value))
         if key == "Message" || next.message.length() == 0 {
-          next = Event::{ ..next, message: value, data }
+          next = Event::{ ..next, message: value, data, }
         } else {
           next = Event::{ ..next, data, }
         }
