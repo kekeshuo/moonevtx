@@ -569,3 +569,15 @@ fn sub_text(cell : SubCell, style : TimeStyle) -> Result[String, EvtxError] {
     Ok(text)
   }
 }
+
+///|
+pub extend BinAttr with @moonbitlang/core/debug.Debug::{to_repr}
+
+///|
+pub extend BinNode with @moonbitlang/core/debug.Debug::{to_repr}
+
+///|
+pub extend SubCell with @moonbitlang/core/debug.Debug::{to_repr}
+
+///|
+pub extend ParsedRoot with @moonbitlang/core/debug.Debug::{to_repr}

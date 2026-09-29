@@ -54,3 +54,9 @@ pub fn EvtxError::message(self : EvtxError) -> String {
     InvalidXmlName(name) => "invalid XML name: \{name}"
   }
 }
+
+///|
+pub extend EvtxError with Eq::{not_equal, equal}
+
+///|
+pub extend EvtxError with @moonbitlang/core/debug.Debug::{to_repr}

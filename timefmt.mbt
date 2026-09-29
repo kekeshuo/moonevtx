@@ -172,3 +172,9 @@ pub fn format_systemtime(
     Iso8601 => Ok(date + "T" + clock + frac)
   }
 }
+
+///|
+pub extend TimeStyle with Eq::{not_equal, equal}
+
+///|
+pub extend TimeStyle with @moonbitlang/core/debug.Debug::{to_repr}

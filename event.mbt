@@ -239,3 +239,6 @@ pub fn EvtxFile::events(
   }
   Ok(out)
 }
+
+///|
+pub extend Event with @moonbitlang/core/debug.Debug::{to_repr}

@@ -432,3 +432,12 @@ pub fn EvtxRecord::xml(
 ) -> Result[String, EvtxError] {
   render_root(self.root, style)
 }
+
+///|
+pub extend FileHeader with @moonbitlang/core/debug.Debug::{to_repr}
+
+///|
+pub extend ChunkHeader with @moonbitlang/core/debug.Debug::{to_repr}
+
+///|
+pub extend EvtxRecord with @moonbitlang/core/debug.Debug::{to_repr}

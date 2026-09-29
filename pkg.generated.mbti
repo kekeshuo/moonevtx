@@ -85,6 +85,7 @@ pub(all) struct BinAttr {
   name : String
   value : BinNode
 } derive(@debug.Debug)
+pub fn BinAttr::to_repr(Self) -> @debug.Repr
 
 pub(all) enum BinNode {
   EndOfStream
@@ -99,6 +100,7 @@ pub(all) enum BinNode {
   NormalSub(Int, Int)
   OptionalSub(Int, Int)
 } derive(@debug.Debug)
+pub fn BinNode::to_repr(Self) -> @debug.Repr
 
 pub(all) struct ChunkHeader {
   offset : Int
@@ -114,6 +116,7 @@ pub(all) struct ChunkHeader {
   header_ok : Bool
   data_ok : Bool
 } derive(@debug.Debug)
+pub fn ChunkHeader::to_repr(Self) -> @debug.Repr
 
 pub(all) struct Event {
   record_id : UInt64
@@ -129,6 +132,7 @@ pub(all) struct Event {
 } derive(@debug.Debug)
 pub fn Event::json(Self) -> String
 pub fn Event::matches(Self, FilterSpec) -> Bool
+pub fn Event::to_repr(Self) -> @debug.Repr
 
 pub(all) struct EventDraft {
   provider : String
@@ -139,6 +143,7 @@ pub(all) struct EventDraft {
   computer : String
   message : String
 } derive(@debug.Debug)
+pub fn EventDraft::to_repr(Self) -> @debug.Repr
 
 pub(all) enum EvtxError {
   Truncated(String, Int, Int)
@@ -155,7 +160,10 @@ pub(all) enum EvtxError {
   InvalidXmlName(String)
 } derive(Eq, @debug.Debug)
 pub fn EvtxError::code(Self) -> String
+pub fn EvtxError::equal(Self, Self) -> Bool
 pub fn EvtxError::message(Self) -> String
+pub fn EvtxError::not_equal(Self, Self) -> Bool
+pub fn EvtxError::to_repr(Self) -> @debug.Repr
 
 pub(all) struct EvtxFile {
   data : Bytes
@@ -181,6 +189,7 @@ pub(all) struct EvtxRecord {
 } derive(@debug.Debug)
 pub fn EvtxRecord::event(Self, TimeStyle) -> Result[Event, EvtxError]
 pub fn EvtxRecord::hexdump(Self, EvtxFile) -> Result[String, EvtxError]
+pub fn EvtxRecord::to_repr(Self) -> @debug.Repr
 pub fn EvtxRecord::xml(Self, TimeStyle) -> Result[String, EvtxError]
 
 pub(all) struct FileHeader {
@@ -196,6 +205,7 @@ pub(all) struct FileHeader {
   checksum : UInt
   checksum_ok : Bool
 } derive(@debug.Debug)
+pub fn FileHeader::to_repr(Self) -> @debug.Repr
 
 pub(all) struct FilterSpec {
   event_id : UInt?
@@ -207,24 +217,29 @@ pub(all) struct FilterSpec {
   since : UInt64?
   until : UInt64?
 } derive(@debug.Debug)
+pub fn FilterSpec::to_repr(Self) -> @debug.Repr
 
 pub(all) struct ParsedRoot {
   template : Array[BinNode]
   substitutions : Array[SubCell]
 } derive(@debug.Debug)
+pub fn ParsedRoot::to_repr(Self) -> @debug.Repr
 
 pub(all) struct SubCell {
   type_code : Int
   payload : Bytes
   nested : Array[ParsedRoot]
 } derive(@debug.Debug)
+pub fn SubCell::to_repr(Self) -> @debug.Repr
 
 pub(all) enum TimeStyle {
   PythonEvtx
   Iso8601
 } derive(Eq, @debug.Debug)
+pub fn TimeStyle::equal(Self, Self) -> Bool
+pub fn TimeStyle::not_equal(Self, Self) -> Bool
+pub fn TimeStyle::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 
 // Traits
-

@@ -136,3 +136,6 @@ pub fn EvtxFile::filter(
     ),
   )
 }
+
+///|
+pub extend FilterSpec with @moonbitlang/core/debug.Debug::{to_repr}

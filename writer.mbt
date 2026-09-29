@@ -451,3 +451,6 @@ pub fn sample_event_drafts() -> Array[EventDraft] {
     },
   ]
 }
+
+///|
+pub extend EventDraft with @moonbitlang/core/debug.Debug::{to_repr}
