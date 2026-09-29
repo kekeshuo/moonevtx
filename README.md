@@ -6,15 +6,20 @@ This is a behavior port of python-evtx (Apache-2.0), not a Windows Event Log API
 
 ## Why it exists
 
-Forensics and IR tools often need to inspect `.evtx` without `wevtutil` or Win32. MoonBit did not have an EVTX/BINXML codec. Adjacent packages cover live Win32 FFI, application loggers, or text XML; they do not decode `ElfFile` chunks.
+Forensics and IR tools often need to inspect `.evtx` without `wevtutil` or Win32. MoonBit did not have an EVTX/BINXML codec. Adjacent packages cover live Win32 FFI, application loggers, or text XML; they do not decode EVTX chunks.
+
+## Requirements
+
+- MoonBit toolchain with `moonc >= 0.10.14`
+- A C compiler is required only for local `native` checks/tests; the portable `wasm-gc` and `js` targets need no system compiler
 
 ## Install
 
 ```text
-moon add kekeshuo/moonevtx
+moon add kekeshuo/moonevtx@0.1.0
 ```
 
-Or copy this repository and `moon check`.
+Or copy this repository and run `moon check`. The examples in this repository use the dependency alias `@evtx`.
 
 ## Example
 
@@ -53,9 +58,17 @@ moon run examples/roundtrip
 
 ## Tests
 
+The CI job checks all supported backends, builds the library, and runs the core suite:
+
 ```text
+moon check --target wasm-gc --deny-warn
+moon check --target wasm --deny-warn
+moon check --target js --deny-warn
+moon check --target native --deny-warn
+moon build --target wasm-gc
 moon test --target wasm-gc
 moon test --target js
+moon test --target native
 ```
 
 Goldens: 3 records, EventIDs 1000/1001/4624, TimeCreated `2024-03-09 16:00:00+00:00`, record sizes 896/888/888, file length 69632, header/chunk CRC verify.
