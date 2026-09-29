@@ -26,6 +26,9 @@ jobs:
           moon version --all
           moonrun --version
 
+      - name: Enforce MoonBit compiler minimum
+        run: python3 tools/check_moonc_version.py --min 0.10.14
+
       - name: Verify formatting
         shell: bash
         run: |
@@ -41,6 +44,9 @@ jobs:
           moon check --target wasm --deny-warn
           moon check --target js --deny-warn
           moon check --target native --deny-warn
+
+      - name: Build library
+        run: moon build --target wasm-gc
 
       - name: Run tests on portable backends
         run: |
