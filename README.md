@@ -16,7 +16,7 @@ Forensics and IR tools often need to inspect `.evtx` without `wevtutil` or Win32
 ## Install
 
 ```text
-moon add kekeshuo/moonevtx@0.1.0
+moon add kekeshuo/moonevtx@0.1.1
 ```
 
 Or copy this repository and run `moon check`. The examples in this repository use the dependency alias `@evtx`.
